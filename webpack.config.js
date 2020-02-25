@@ -1,12 +1,14 @@
 const webpack = require("webpack");
 const resolve = require("path").resolve;
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const config = {
   devtool: "eval-source-map",
   entry: __dirname + "/src/index.js",
+  plugins: [new CleanWebpackPlugin()],
   output: {
-    path: resolve("./public"),
-    filename: "bundle.js",
-    publicPath: resolve("./public")
+    path: resolve("./public/js"),
+    filename: "[name].[contenthash].js",
+    publicPath: resolve("./public/js")
   },
   resolve: {
     extensions: [".js", ".jsx", ".css"]
@@ -26,6 +28,18 @@ const config = {
         loader: "style-loader!css-loader?modules"
       }
     ]
+  },
+  optimization: {
+    runtimeChunk: "single",
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all"
+        }
+      }
+    }
   }
 };
 module.exports = config;
