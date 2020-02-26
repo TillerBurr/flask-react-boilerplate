@@ -1,17 +1,15 @@
-import "@babel/polyfill";
+// import "@babel/polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { store, history } from "./store";
+// import { store, history } from "./store";
 import { routes } from "./routes";
 import { ConnectedRouter } from "connected-react-router";
-import "./assets/styles/style.js";
+// import "./assets/styles/style.js";
 
 // render the main component
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>{routes}</ConnectedRouter>
-  </Provider>,
+  <ConnectedRouter history={history}>{routes}</ConnectedRouter>,
 
   document.getElementById("root")
 );

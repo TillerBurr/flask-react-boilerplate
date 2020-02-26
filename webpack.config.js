@@ -2,32 +2,16 @@ const webpack = require("webpack");
 const resolve = require("path").resolve;
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const config = {
-  devtool: "eval-source-map",
+  devtool: "source-map",
   entry: __dirname + "/src/index.js",
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [new CleanWebpackPlugin({ cleanStaleWebpackAssets: true })],
   output: {
     path: resolve("./public/js"),
     filename: "[name].[contenthash].js",
     publicPath: resolve("./public/js")
   },
   resolve: {
-    extensions: [".js", ".jsx", ".css"]
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js?/,
-        loader: "babel-loader",
-        exclude: /node_modules/,
-        query: {
-          presets: ["@babel/preset-env", "@babel/react"]
-        }
-      },
-      {
-        test: /\.css$/,
-        loader: "style-loader!css-loader?modules"
-      }
-    ]
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".css"]
   },
   optimization: {
     runtimeChunk: "single",
@@ -40,6 +24,26 @@ const config = {
         }
       }
     }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(t|j)sx?$/,
+        use: { loader: "ts-loader" },
+        exclude: /node_modules/
+      },
+
+      {
+        test: /\.css$/,
+        loader: "style-loader!css-loader?modules"
+      },
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "source-map-loader"
+      }
+    ]
   }
 };
 module.exports = config;
