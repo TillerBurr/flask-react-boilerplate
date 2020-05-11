@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  Windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get tag
+        id: tag
+        shell: bash
+        run: |
+          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.7"
+          architecture: "x64"
+      - name: Install Poetry
+        run: |
+          python get-poetry.py -y
+          $env:Path += ";$env:Userprofile\.poetry\bin"
+      - name: Setup Poetry
+        run: |
+          $env:Path += ";$env:Userprofile\.poetry\bin"
+          poetry config virtualenvs.in-project true
+      - name: Install dependencies
+        run: |
+          $env:Path += ";$env:Userprofile\.poetry\bin"
+          poetry install --no-dev
+      - name: Run PyInstaller
+        run: |
+          $env:Path += ";$env:Userprofile\.poetry\bin"
+          poetry run pyinstaller IDEXX_daily.spec
+      - name: Upload dist IDEXX Daily Directory
+        uses: actions/upload-artifact@v1
+        with:
+          name: IDEXX_Daily-${{ steps.tag.outputs.tag }}
+          path: dist/IDEXX_Daily
+
+  Release:
+    needs: [Windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get tag
+        id: tag
+        run: |
+          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+      - name: Download Release File
+        uses: actions/download-artifact@master
+        with:
+          name: IDEXX_Daily-${{ steps.tag.outputs.tag }}
+          path: IDEXX_Daily-${{ steps.tag.outputs.tag }}
+      - name: Zip Directory before Release
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: zip -qq -r ./IDEXX_Daily-${{ steps.tag.outputs.tag }}.zip ./IDEXX_Daily-${{ steps.tag.outputs.tag }}
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          release_name: ${{ steps.tag.outputs.tag }}
+          draft: false
+          prerelease: false
+      - name: Upload Windows release file asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./IDEXX_Daily-${{ steps.tag.outputs.tag }}.zip
+          asset_name: IDEXX_Daily-${{ steps.tag.outputs.tag }}.zip
+          asset_content_type: application/zip

@@ -1,0 +1,30 @@
+default_language_version:
+  python: python3.7
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.5.0
+    hooks:
+      - id: check-yaml
+        exclude: .github/
+      - id: end-of-file-fixer
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 4.3.21-2
+    hooks:
+      - id: isort
+        args: [--settings-path, ./pyproject.toml]
+        additional_dependencies: [tomlkit, toml]
+
+  # - repo: https://github.com/asottile/pyupgrade
+  #   rev: v2.4.1
+  #   hooks:
+  #     - id: pyupgrade
+  #       exclude: ^{{ cookiecutter.project_name }}/
+  #       args: [--py37-plus]
+
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
+        # args: [--config, ./pyproject.toml]

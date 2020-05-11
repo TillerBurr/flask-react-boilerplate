@@ -3,4 +3,5 @@ from server.app import create_app
 
 app = create_app()
 ui = FlaskUI(app)
-ui.run()
+if __name__ == "__main__":
+    ui.run()

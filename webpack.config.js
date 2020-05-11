@@ -2,8 +2,8 @@ const webpack = require("webpack");
 const resolve = require("path").resolve;
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const config = {
-  devtool: "source-map",
-  entry: __dirname + "/src/index.js",
+  devtool: "inline-source-map",
+  entry: __dirname + "/src/index.tsx",
   plugins: [new CleanWebpackPlugin({ cleanStaleWebpackAssets: true })],
   output: {
     path: resolve("./public/js"),
