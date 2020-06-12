@@ -13,3 +13,5 @@ config.endpoint = config.api.protocol + '://' +
   config.api.prefix + '/';
 
 module.exports = config;
+
+export const config

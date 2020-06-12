@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import { fetchItems } from './actions/items';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import config from './config/client';
+import { config } from './config/client';
 import freeze from 'redux-freeze';
 
 const history = createBrowserHistory();
@@ -29,6 +29,7 @@ const store = createStore(
 );
 
 // initialize app state
-store.dispatch(fetchItems(config.endpoint + 'items'));
+// @ts-ignore
+// store.dispatch(fetchItems(config.endpoint + 'items'));
 
 export { store, history };
