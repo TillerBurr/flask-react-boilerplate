@@ -9,22 +9,20 @@ repos:
         exclude: .github/
       - id: end-of-file-fixer
 
-  - repo: https://github.com/timothycrosley/isort
-    rev: 4.3.21-2
+  - repo: local
     hooks:
       - id: isort
-        args: [--settings-path, ./pyproject.toml]
-        additional_dependencies: [tomlkit, toml]
+        name: isort
+        entry: poetry run isort -y --settings-path ./pyproject.toml
+        types: [python]
+        language: system
 
-  # - repo: https://github.com/asottile/pyupgrade
-  #   rev: v2.4.1
-  #   hooks:
-  #     - id: pyupgrade
-  #       exclude: ^{{ cookiecutter.project_name }}/
-  #       args: [--py37-plus]
+  - repo: local
 
-  - repo: https://github.com/psf/black
-    rev: stable
     hooks:
       - id: black
+        name: black
+        entry: poetry run black --config ./pyproject.toml
+        types: [python]
+        language: system
         # args: [--config, ./pyproject.toml]
