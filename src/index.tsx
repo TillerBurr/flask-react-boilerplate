@@ -1,17 +1,22 @@
 // import "@babel/polyfill";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { store, history } from "./store";
-import { routes } from "./routes";
-import { ConnectedRouter } from "connected-react-router";
-// import "./assets/styles/style.js";
-import { TestType, StringType } from "my-types";
+import Main from './main'
+import { createBrowserHistory } from 'history'
 
+import configureStore from './configureStore'
+import * as serviceWorker from './serviceWorker'
+
+const history = createBrowserHistory()
+const initialState = window.INITIAL_REDUX_STATE
+const store = configureStore(history, initialState)
 // render the main component
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>{routes}</ConnectedRouter>
-  </Provider>,
+
+  <Main store={store} history={history} />,
+
   document.getElementById("root")
 );
+
+// TODO is serviceWorker necessary?
+serviceWorker.unregister()

@@ -3,3 +3,10 @@ export interface TestType {
 }
 
 export type StringType = string;
+
+export interface initialStateProps {
+  searches: number;
+  isFetching: boolean;
+  items: object[];
+  err?: string;
+}

@@ -1,16 +1,24 @@
 import * as React from "react";
+import { ApplicationState } from '../store'
+import { incrementSearches, fetchItems } from '../store/items/actions'
+
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+export const App: React.FC = (props) => {
+  const dispatch = useDispatch();
+  const search = useSelector(
+    (state: ApplicationState) => state.items.searches
+  );
+  return (
+    <div className="app-container">
+      <Link to={"/"}>Home</Link>
+      {props.children}
 
-export default class AppWrapper extends React.Component {
-  render() {
-    return (
-      <div className="app-container">
-        <Link to={"/"}>Home</Link>
+      <h1> Searches: {search}</h1>
+      <button onClick={() => dispatch(incrementSearches())}>
+        INCREMENT
+      </button>
 
-        <Link to={"/about"}>About</Link>
-        <Link to={"/about/subroute"}>Subcomponent</Link>
-        {this.props.children}
-      </div>
-    );
-  }
-}
+    </div>
+  );
+};
