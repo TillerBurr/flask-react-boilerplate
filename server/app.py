@@ -1,7 +1,8 @@
 """server/app.py - main api app declaration"""
 # FLASK_ENV=development FLASK_APP=server/app.py flask run -p 5001
 from pathlib import Path
-from flask import Flask, jsonify, send_from_directory, render_template
+
+from flask import Flask, jsonify, render_template
 
 from server.config import Config
 

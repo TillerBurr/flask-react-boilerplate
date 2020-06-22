@@ -7,15 +7,11 @@ import { routes } from "./routes";
 import { ConnectedRouter } from "connected-react-router";
 // import "./assets/styles/style.js";
 import { TestType, StringType } from "my-types";
-let example: TestType["test"] = "test";
-let another_example: StringType = "another test";
 
 // render the main component
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      {routes}
-    </ConnectedRouter>
+    <ConnectedRouter history={history}>{routes}</ConnectedRouter>
   </Provider>,
   document.getElementById("root")
 );

@@ -8,19 +8,16 @@
     "target": "es6", // specify ECMAScript target version
     "allowJs": true, // allow a partial TypeScript and JavaScript codebase
     "moduleResolution": "node",
+    "esModuleInterop": true,
     // "strict": true,
     "strict": false,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
-      "my-types": [
-        "src/types"
-      ]
+      "my-types": ["src/types"]
     },
     "noUnusedParameters": true,
     "noImplicitAny": true
   },
-  "include": [
-    "./src/"
-  ]
+  "include": ["./src/"]
 }

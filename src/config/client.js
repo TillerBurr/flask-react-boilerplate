@@ -1,17 +1,22 @@
 let config = {
   api: {
-    protocol: 'http',
-    host: 'localhost',
-    port: 7082,
-    prefix: 'api'
+    protocol: "http",
+    host: "localhost",
+    port: 5000,
+    prefix: "api",
   },
 };
 
-config.endpoint = config.api.protocol + '://' +
-  config.api.host + ':' +
-  config.api.port + '/' +
-  config.api.prefix + '/';
+config.endpoint =
+  config.api.protocol +
+  "://" +
+  config.api.host +
+  ":" +
+  config.api.port +
+  "/" +
+  config.api.prefix +
+  "/";
 
-module.exports = config;
+// module.exports = config;
 
-export const config
+export default config;
