@@ -7,7 +7,7 @@
     "@material-ui/icons": "4.9.1",
     "@material-ui/lab": "4.0.0-alpha.56",
     "@testing-library/jest-dom": "4.2.4",
-    "@testing-library/react": "9.5.0",
+    "@testing-library/react": "10.4.8",
     "@testing-library/user-event": "7.2.1",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/material-ui": "0.21.8",
