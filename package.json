@@ -8,7 +8,7 @@
     "@material-ui/lab": "4.0.0-alpha.56",
     "@testing-library/jest-dom": "5.11.3",
     "@testing-library/react": "10.4.9",
-    "@testing-library/user-event": "7.2.1",
+    "@testing-library/user-event": "12.1.1",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/material-ui": "0.21.8",
     "@types/react": "16.9.46",
