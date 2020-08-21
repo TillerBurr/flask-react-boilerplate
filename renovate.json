@@ -1,6 +1,6 @@
 {
   "extends": [
     "config:base",
-    "group:allNonMajor"
+    "group:all"
   ]
 }
