@@ -23,7 +23,7 @@
     "connected-react-router": "6.8.0",
     "formik": "2.1.5",
     "formik-material-ui": "2.0.1",
-    "history": "4.10.1",
+    "history": "5.0.0",
     "isomorphic-fetch": "2.2.1",
     "prop-types": "15.7.2",
     "react": "16.13.1",
