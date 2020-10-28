@@ -17,7 +17,7 @@ jobs:
         run: |
           echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
       - name: Set up Python 3.7
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: "3.7"
           architecture: "x64"
@@ -38,7 +38,7 @@ jobs:
           $env:Path += ";$env:Userprofile\.poetry\bin"
           poetry run pyinstaller IDEXX_daily.spec
       - name: Upload dist IDEXX Daily Directory
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: IDEXX_Daily-${{ steps.tag.outputs.tag }}
           path: dist/IDEXX_Daily
@@ -74,7 +74,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Upload Windows release file asset
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
