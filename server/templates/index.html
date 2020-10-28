@@ -1,5 +1,6 @@
 <!— index.html —>
-<html>
+  <html>
+
   <head>
     <meta charset="utf-8" />
     <!-- Latest compiled and minified bootstrap CSS -->
@@ -11,10 +12,33 @@
       FLASK - REACT BOILERPLATE
     </title>
   </head>
+
   <body>
+    {% if error is defined and status is defined %}
+    <div id="root" data-error='{{ error }}' data-status='{{ status }}' />
+    {% else %}
     <div id="root" />
+    {% endif %}
     {% for _file in js %}
     <script src={{url_for("static",filename=_file)}} type="text/javascript"></script>
     {% endfor %}
+
+    {% if not config['DEBUG'] %}
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function () {
+
+        var url = 'http://127.0.0.1:5001/GUI-is-still-open';
+        fetch(url, { mode: 'no-cors' });
+        var interval = function () {
+          setInterval(function () { fetch(url, { mode: 'no-cors' }); }, 5000)();
+        }
+        interval();
+
+      });
+    </script>
+    {% endif %}
+
   </body>
-</html>
+
+  </html>

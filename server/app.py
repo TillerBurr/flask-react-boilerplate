@@ -4,7 +4,8 @@ from pathlib import Path
 
 from flask import Flask, jsonify, render_template
 
-from server.config import Config
+from .config import Config
+from .extensions import db, migrate, cache
 
 
 def register_context_processors(app: Flask) -> None:
@@ -57,3 +58,18 @@ def create_app():
         # return send_from_directory(app.static_folder, "index.html")
 
     return app
+
+def register_extensions(server: Flask):
+    from .models import SampleModel  # noqa
+
+    db.init_app(server)
+    migrate.init_app(server, db)
+    cache.init_app(server)
+    with server.app_context():
+        db.create_all()
+
+
+if __name__ == "__main__":
+    app = create_app()
+    with app.app_context():
+        db.create_all()
