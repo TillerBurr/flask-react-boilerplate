@@ -60,7 +60,7 @@ jobs:
           name: IDEXX_Daily-${{ steps.tag.outputs.tag }}
           path: IDEXX_Daily-${{ steps.tag.outputs.tag }}
       - name: Zip Directory before Release
-        uses: montudor/action-zip@v0.1.0
+        uses: montudor/action-zip@v1.0.0
         with:
           args: zip -qq -r ./IDEXX_Daily-${{ steps.tag.outputs.tag }}.zip ./IDEXX_Daily-${{ steps.tag.outputs.tag }}
       - name: Create Release
