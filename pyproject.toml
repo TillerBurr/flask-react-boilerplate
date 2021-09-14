@@ -10,10 +10,14 @@ flaskwebgui = "^0.1.6"
 loguru = ">=0.2.5"
 pandas = ">=0.24.2"
 python = "^3.7, !=3.8"
-sqlalchemy_mixins = "^1.1"
 
+Flask = "^2.0.1"
 myst-parser = "^0.12.0"
 python-dotenv = "^0.14.0"
+sqlalchemy-mixins = "^1.5"
+Flask-SQLAlchemy = "^2.5.1"
+Flask-Migrate = "^3.1.0"
+Flask-Caching = "^1.10.1"
 
 [tool.poetry.dev-dependencies]
 black = {version = ">=18.3-alpha.0", allow-prereleases = true}

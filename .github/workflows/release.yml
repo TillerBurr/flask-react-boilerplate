@@ -10,21 +10,27 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - name: Get tag
         id: tag
         shell: bash
         run: |
           echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2.2.2
         with:
-          python-version: "3.7"
+          python-version: "3.9"
           architecture: "x64"
-      - name: Install Poetry
+      - name: Build Javascript
+        uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+      - run: yarn build
+      - name: Replace .flaskenv with production version
         run: |
-          python get-poetry.py -y
-          $env:Path += ";$env:Userprofile\.poetry\bin"
+          cp .flaskenv.prod .flaskenv
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.1.4
       - name: Setup Poetry
         run: |
           $env:Path += ";$env:Userprofile\.poetry\bin"
@@ -36,12 +42,16 @@ jobs:
       - name: Run PyInstaller
         run: |
           $env:Path += ";$env:Userprofile\.poetry\bin"
-          poetry run pyinstaller IDEXX_daily.spec
-      - name: Upload dist IDEXX Daily Directory
-        uses: actions/upload-artifact@v2
+          poetry run pyinstaller \
+          --add-data "server/static;server/static" \
+          --add-data "server/templates;server/templates" \
+          --add-data ".flaskenv;."
+
+      - name: Upload dist Directory
+        uses: actions/upload-artifact@v2.2.3
         with:
-          name: IDEXX_Daily-${{ steps.tag.outputs.tag }}
-          path: dist/IDEXX_Daily
+          name: REPLACE_ME-${{ steps.tag.outputs.tag }}
+          path: dist/REPLACE_ME
 
   Release:
     needs: [Windows]
@@ -49,20 +59,20 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - name: Get tag
         id: tag
         run: |
           echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
       - name: Download Release File
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@main
         with:
-          name: IDEXX_Daily-${{ steps.tag.outputs.tag }}
-          path: IDEXX_Daily-${{ steps.tag.outputs.tag }}
+          name: REPLACE_ME-${{ steps.tag.outputs.tag }}
+          path: REPLACE_ME-${{ steps.tag.outputs.tag }}
       - name: Zip Directory before Release
-        uses: montudor/action-zip@v0.1.0
+        uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r ./IDEXX_Daily-${{ steps.tag.outputs.tag }}.zip ./IDEXX_Daily-${{ steps.tag.outputs.tag }}
+          args: zip -qq -r ./REPLACE_ME-${{ steps.tag.outputs.tag }}.zip ./REPLACE_ME-${{ steps.tag.outputs.tag }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -79,6 +89,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./IDEXX_Daily-${{ steps.tag.outputs.tag }}.zip
-          asset_name: IDEXX_Daily-${{ steps.tag.outputs.tag }}.zip
+          asset_path: ./REPLACE_ME-${{ steps.tag.outputs.tag }}.zip
+          asset_name: REPLACE_ME-${{ steps.tag.outputs.tag }}.zip
           asset_content_type: application/zip
+      - name: Delete Artifact
+        uses: GeekyEggo/delete-artifact@v1.0.0
+        with:
+          name: REPLACE_ME-${{ steps.tag.outputs.tag }}
+      # - name: Notify Teams Channel
+      #   uses: jdcargile/ms-teams-notification@v1.3
+      #   with:
+      #     github-token: ${{ github.token }}
+      #     ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+      #     notification-summary: A new version (${{ steps.tag.outputs.tag }}) has been created.
+      #     notification-color: 17a2b8
+      #     timezone: America/Chicago
