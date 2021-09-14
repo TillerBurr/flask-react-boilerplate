@@ -10,7 +10,13 @@
 
 # Icon must end with two \r
 Icon
-
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 # Thumbnails
 ._*
 
